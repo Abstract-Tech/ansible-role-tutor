@@ -10,7 +10,7 @@ env:
   DOCKER_BUILDX: "1"
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
 
     steps:
