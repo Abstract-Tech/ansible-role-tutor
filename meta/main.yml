@@ -1,0 +1,17 @@
+---
+
+galaxy_info:
+  author: Abstract-Technology GmbHIllia Shestakov
+  company: Idealista S.A.U.
+  description: Tutor Role
+  min_ansible_version: 
+  license: Apache 2.0
+  galaxy_tags:
+    - tag1
+    - tag2
+    - tag3
+  platforms:
+    - name: Debian
+      versions:
+        - bullseye
+        - buster

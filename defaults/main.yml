@@ -1,0 +1,61 @@
+---
+
+## General
+# Version
+tutor_version: 1.0.0
+tutor_release_system: linux_amd64
+
+# Package URL
+tutor_release_name: "exampleapplication_{{ tutor_version }}_{{ tutor_release_system }}"
+tutor_package: "{{ tutor_release_name }}.tar.gz"
+tutor_url: "https://github.com/someuser/somerepo/releases/download/v{{ tutor_version }}/{{ tutor_package }}"
+
+# Package paths
+tutor_download_path: /usr/src
+tutor_package_path: "{{ tutor_download_path }}/{{ tutor_package }}"
+tutor_src_bin: "{{ tutor_download_path }}/{{ tutor_release_name }}/bin/{{ tutor_exec_name }}"
+
+# Set true to force the download and installation of the binary
+tutor_force_reinstall: false
+
+# Installation path
+tutor_root_path: /opt/tutor
+tutor_bin_path: "{{ tutor_root_path }}/bin"
+tutor_skeleton_paths:
+  - "{{ tutor_bin_path }}"
+tutor_exec_name: 
+
+## Service options
+# Documentation
+tutor_documentation_link: ""
+
+# Owner
+tutor_user: exampleuser
+tutor_group: examplegroup
+tutor_user_shell: /usr/sbin/nologin
+
+# Maximum number of files limit
+tutor_max_files: 32768
+
+# Start on boot
+tutor_service_enabled: True
+# Current state: started, stopped
+tutor_service_state: started
+
+# Logs
+# If wanted to output the logs to a file define the following variable
+# More information at https://www.freedesktop.org/software/systemd/man/systemd.exec.html#StandardOutput=
+# tutor_log_path: /var/log
+# tutor_log_file: "{{ tutor_log_path }}/tutor.log"
+tutor_log_output: "{% if tutor_log_file is defined %} file:{{ tutor_log_file }} {% else %} journal {% endif %}"
+
+# Flags
+tutor_port: # the port exposed by the service goes here 
+tutor_flag1_value: example_value_1
+tutor_flag2_value: example_value_2
+tutor_options:  
+  - "port {{ tutor_port }}"
+  - "flag1 {{ tutor_flag1_value }}"
+  - "flag2 {{ tutor_flag2_value }}"
+
+tutor_private_tmp: true

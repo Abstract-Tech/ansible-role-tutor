@@ -1,0 +1,24 @@
+{{ ansible_managed | comment }}
+[Unit]
+Description=tutor
+Documentation={{ tutor_documentation_link }}
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+PrivateTmp={{ tutor_private_tmp }}
+User={{ tutor_user }}
+Group={{ tutor_group }}
+RuntimeDirectory=tutor
+LimitNOFILE={{ tutor_max_files }}
+
+ExecStart={{ tutor_bin_path }}/{{ tutor_exec_name }} {% for option in tutor_options %}{% if option %}-{{ option }} {% endif %}{% endfor %}
+
+StandardOutput={{ tutor_log_output }}
+StandardError={{ tutor_log_output }}
+ExecReload=/bin/kill -HUP $MAINPID
+KillSignal=SIGTERM
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

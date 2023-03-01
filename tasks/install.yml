@@ -1,0 +1,89 @@
+---
+
+- name: TUTOR | Ensure tutor group
+  group:
+    name: "{{ tutor_group }}"
+    system: yes
+    state: present
+  tags:
+    - tutor_install
+
+- name: TUTOR | Ensure tutor user
+  user:
+    name: "{{ tutor_user }}"
+    group: "{{ tutor_group }}"
+    system: yes
+    shell: "{{ tutor_user_shell }}"
+    createhome: no
+  tags:
+    - tutor_install
+
+- name: TUTOR | Ensure skeleton paths
+  file:
+    dest: "{{ item }}"
+    owner: "{{ tutor_user }}"
+    group: "{{ tutor_group }}"
+    mode: 0755
+    state: directory
+  with_items:
+    - "{{ tutor_skeleton_paths }}"
+  tags:
+    - tutor_install
+
+- name: TUTOR | Ensure skeleton log paths
+  file:
+    dest: "{{ tutor_log_path }}"
+    owner: "{{ tutor_user }}"
+    group: "{{ tutor_group }}"
+    mode: 0755
+    state: directory
+  when: tutor_log_file is defined
+  tags:
+    - tutor_install
+
+- name: TUTOR | Check tutor version
+  command: "{{ tutor_exec_name }} --version"
+  register: tutor_check
+  changed_when: false
+  ignore_errors: true
+  check_mode: no
+  tags:
+    - tutor_install
+
+- name: TUTOR | Download package
+  get_url:
+    url: "{{ tutor_url }}"
+    dest: "{{ tutor_package_path }}"
+  when: tutor_force_reinstall or tutor_check is failed or tutor_version not in tutor_check.stderr
+  tags:
+    - tutor_install
+
+- name: TUTOR | Extract downloaded package
+  unarchive:
+    src: "{{ tutor_package_path }}"
+    dest: "{{ tutor_download_path }}"
+    remote_src: True
+  when: tutor_force_reinstall or tutor_check is failed or tutor_version  not in tutor_check.stderr
+  tags:
+    - tutor_install
+
+- name: TUTOR | Copy binary
+  copy:
+    src: "{{ tutor_src_bin }}"
+    dest: "{{ tutor_bin_path }}/{{ tutor_exec_name }}"
+    owner: "{{ tutor_user }}"
+    group: "{{ tutor_group }}"
+    remote_src: True
+    mode: 0755
+  when: tutor_force_reinstall or tutor_check is failed or tutor_version not in tutor_check.stderr
+  tags:
+    - tutor_install
+
+- name: TUTOR | Link binary
+  file:
+    src: "{{ tutor_bin_path }}/{{ tutor_exec_name }}"
+    dest: "/usr/bin/{{ tutor_exec_name }}"
+    state: link
+  when: tutor_force_reinstall or tutor_check is failed or tutor_version not in tutor_check.stderr
+  tags:
+    - tutor_install

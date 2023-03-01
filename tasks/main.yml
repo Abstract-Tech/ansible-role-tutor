@@ -1,0 +1,16 @@
+---
+
+- name: TUTOR | Install
+  import_tasks: install.yml
+  tags:
+    - tutor_install
+
+- name: TUTOR | Configure
+  import_tasks: config.yml
+  tags:
+    - tutor_configure
+
+- name: TUTOR | Service
+  import_tasks: service.yml
+  tags:
+    - tutor_service

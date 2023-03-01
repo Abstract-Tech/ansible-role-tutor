@@ -1,0 +1,21 @@
+---
+
+- name: TUTOR | Copy Daemon script
+  template:
+    src: tutor.service.j2
+    dest: /etc/systemd/system/tutor.service
+    mode: 0644
+    owner: root
+    group: root
+  notify: restart tutor
+  tags:
+    - tutor_service
+
+- name: TUTOR | Configuring service
+  systemd:
+    name: tutor
+    state: "{{ tutor_service_state }}"
+    enabled: "{{ tutor_service_enabled }}"
+    daemon_reload: yes
+  tags:
+    - tutor_service
