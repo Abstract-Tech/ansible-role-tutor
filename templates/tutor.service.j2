@@ -1,6 +1,6 @@
 {{ ansible_managed | comment }}
 [Unit]
-Description=tutor
+Description=openedx@tutor
 Documentation={{ tutor_documentation_link }}
 Requires=network-online.target
 After=network-online.target
@@ -11,13 +11,12 @@ User={{ tutor_user }}
 Group={{ tutor_group }}
 RuntimeDirectory=tutor
 LimitNOFILE={{ tutor_max_files }}
-
-ExecStart={{ tutor_bin_path }}/{{ tutor_exec_name }} {% for option in tutor_options %}{% if option %}-{{ option }} {% endif %}{% endfor %}
-
-StandardOutput={{ tutor_log_output }}
-StandardError={{ tutor_log_output }}
-ExecReload=/bin/kill -HUP $MAINPID
+WorkingDirectory={{ tutor_venv_path }}
+ExecStart={{ tutor_venv_path }}/{{ tutor_exec_name }} {{ tutor_start_arguments }}
+ExecReload={{ tutor_venv_path }}/{{ tutor_exec_name }} {{ tutor_reload_arguments }}
 KillSignal=SIGTERM
+Environment="TUTOR_ROOT={{ tutor_venv_path }}/config"
+Environment="TUTOR_PLUGINS_ROOT={{ tutor_venv_path }}/config/plugins"
 Restart=always
 
 [Install]
