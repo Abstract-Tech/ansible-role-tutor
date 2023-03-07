@@ -7,6 +7,9 @@
 
 - name: TUTOR | Configure
   ansible.builtin.import_tasks: config.yml
+  environment:
+    TUTOR_ROOT: "{{ tutor_config_path }}"
+    TUTOR_PLUGINS_ROOT: "{{ tutor_config_path }}/plugins"
   tags:
     - tutor_configure
 

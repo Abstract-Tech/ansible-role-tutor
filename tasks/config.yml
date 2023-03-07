@@ -1,1 +1,26 @@
 ---
+
+- name: TUTOR | Update config with production settings
+  ansible.builtin.command: "{{ tutor_venv_path }}/{{ tutor_exec_name }} config save --set {{ item.key }}={{ item.value | to_yaml }}"
+  loop: "{{ tutor_prod_config | dict2items }}"
+  become: true
+  become_user: "{{ tutor_user }}"
+  tags:
+    - tutor_config
+
+# TODO: It can be done in one command
+- name: TUTOR | Update config with host-specific secrets
+  ansible.builtin.command: "{{ tutor_venv_path }}/{{ tutor_exec_name }} config save --set {{ item.key }}={{ item.value | to_yaml }}"
+  loop: "{{ tutor_secrets | dict2items }}"
+  no_log: true
+  become: true
+  become_user: "{{ tutor_user }}"
+  tags:
+    - tutor_config
+
+- name: TUTOR | Save configuration
+  ansible.builtin.command: "{{ tutor_venv_path }}/{{ tutor_exec_name }} config save"
+  become: true
+  become_user: "{{ tutor_user }}"
+  tags:
+    - tutor_config
