@@ -4,4 +4,3 @@
   ansible.builtin.systemd:
     name: tutor
     state: restarted
-  when: tutor_service_state != 'stopped'

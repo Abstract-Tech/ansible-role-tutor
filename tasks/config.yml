@@ -5,8 +5,12 @@
   loop: "{{ tutor_prod_config | dict2items }}"
   become: true
   become_user: "{{ tutor_user }}"
+  changed_when: false  # It shouldn't really be changed after install
+  notify:
+    - Restart tutor
   tags:
     - tutor_config
+    - tutor_deploy
 
 # TODO: It can be done in one command
 - name: TUTOR | Update config with host-specific secrets
@@ -15,12 +19,7 @@
   no_log: true
   become: true
   become_user: "{{ tutor_user }}"
+  changed_when: false  # It shouldn't really be changed after install
   tags:
     - tutor_config
-
-- name: TUTOR | Save configuration
-  ansible.builtin.command: "{{ tutor_venv_path }}/{{ tutor_exec_name }} config save"
-  become: true
-  become_user: "{{ tutor_user }}"
-  tags:
-    - tutor_config
+    - tutor_deploy
