@@ -1,8 +1,7 @@
 ---
-
 - name: TUTOR | Update config with production settings
   ansible.builtin.command: "{{ tutor_venv_path }}/{{ tutor_exec_name }} config save --set {{ item.key }}={{ item.value | to_yaml }}"
-  loop: "{{ tutor_prod_config | dict2items }}"
+  loop: "{{ tutor_prod_config | combine(tutor_prod_host_config) | dict2items }}"
   become: true
   become_user: "{{ tutor_user }}"
   changed_when: false  # It shouldn't really be changed after install
@@ -11,6 +10,7 @@
   tags:
     - tutor_config
     - tutor_deploy
+
 
 # TODO: It can be done in one command
 - name: TUTOR | Update config with host-specific secrets
