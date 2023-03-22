@@ -58,7 +58,7 @@
 - name: TUTOR | Create virtualenv directory
   ansible.builtin.file:
     path: /opt/tutor
-
+    recurse: yes
     mode: 'u+rwx'
     owner: "{{ tutor_user }}"
     group: "{{ tutor_group }}"
