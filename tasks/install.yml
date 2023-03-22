@@ -49,6 +49,7 @@
       - python3
       - python3-pip
       - python3-dev
+      - python3-virtualenv
       - libyaml-dev
       - git
   when: tutor_force_reinstall or tutor_check is failed or tutor_version not in tutor_check.stdout
