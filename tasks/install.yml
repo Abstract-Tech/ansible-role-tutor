@@ -101,6 +101,10 @@
 
 - name: TUTOR | Pull all required images
   ansible.builtin.command: "{{ tutor_venv_path }}/{{ tutor_exec_name }} images pull all"
+  environment:
+    TUTOR_ROOT: "{{ tutor_config_path }}"
+    TUTOR_PLUGINS_ROOT: "{{ tutor_config_path }}/plugins"
+    TUTOR_APP: "{{ tutor_app }}"
   become: true
   become_user: "{{ tutor_user }}"
   register: tutor_pull_result

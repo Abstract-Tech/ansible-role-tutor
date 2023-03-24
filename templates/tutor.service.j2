@@ -17,6 +17,7 @@ ExecReload={{ tutor_venv_path }}/{{ tutor_exec_name }} {{ tutor_reload_arguments
 KillSignal=SIGTERM
 Environment="TUTOR_ROOT={{ tutor_venv_path }}/config"
 Environment="TUTOR_PLUGINS_ROOT={{ tutor_venv_path }}/config/plugins"
+Environment="TUTOR_APP={{ tutor_app }}"
 Restart=always
 
 [Install]
