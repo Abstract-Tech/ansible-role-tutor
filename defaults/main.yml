@@ -28,7 +28,7 @@ tutor_documentation_link: "https://docs.tutor.overhang.io"
 # Owner
 tutor_user: tutor
 tutor_group: tutor
-tutor_user_shell: /usr/sbin/nologin
+tutor_user_shell: /bin/bash
 
 # Maximum number of files limit
 tutor_max_files: 32768
