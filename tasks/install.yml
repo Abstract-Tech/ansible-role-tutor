@@ -14,9 +14,9 @@
     group: "{{ tutor_group }}"
     groups:
       - docker
-    system: yes
+    system: false
+    createhome: true
     shell: "{{ tutor_user_shell }}"
-    createhome: no
   tags:
     - tutor_install
 
