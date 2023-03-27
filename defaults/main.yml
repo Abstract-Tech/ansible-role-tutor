@@ -41,3 +41,5 @@ tutor_service_state: started
 tutor_private_tmp: true
 
 tutor_config_version: main
+
+tutor_app: tutor

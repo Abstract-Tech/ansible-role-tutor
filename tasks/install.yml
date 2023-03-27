@@ -20,6 +20,28 @@
   tags:
     - tutor_install
 
+- name: TUTOR | Ensure .ssh directory exists.
+  ansible.builtin.file:
+    dest: "{{ tutor_ssh_key_file | dirname }}"
+    mode: 0700
+    owner: "{{ tutor_user }}"
+    state: directory
+  tags:
+    - tutor_install
+    - tutor_ssh
+  when: tutor_ssh_key is defined
+
+- name: TUTOR | Install ssh key
+  ansible.builtin.copy:
+    content: "{{ tutor_ssh_key }}"
+    dest: "{{ tutor_ssh_key_file }}"
+    mode: 0600
+    owner: "{{ tutor_user }}"
+  tags:
+    - tutor_install
+    - tutor_ssh
+  when: tutor_ssh_key is defined
+
 - name: Allow tutor user nopasswd sudo access. It's in the docker group anyway.
   community.general.sudoers:
     name: tutor-service
