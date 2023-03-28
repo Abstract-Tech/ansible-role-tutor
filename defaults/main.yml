@@ -18,6 +18,7 @@ tutor_skeleton_paths:
   - "{{ tutor_lib_path }}"
   - "{{ tutor_config_path }}"
 tutor_exec_name: bin/tutor
+tutor_init_arguments: "local do init"
 tutor_start_arguments: "local start"
 tutor_reload_arguments: "local exec lms reload-uwsgi"
 
@@ -43,3 +44,23 @@ tutor_private_tmp: true
 tutor_config_version: main
 
 tutor_app: tutor
+
+tutor_config_repo: https://github.com/Abstract-Tech/tutor-default
+
+tutor_prod_config:
+  ENABLE_HTTPS: false
+  ENABLE_WEB_PROXY: true
+
+tutor_secrets:
+  JWT_RSA_PRIVATE_KEY: "-----BEGIN RSA PRIVATE KEY-----\nMIIEogIBAAKCAQEA1wSTGV/614fO9bjrn1cpoSsc2uKeFYl01ZQwziUDkH0s0N8m\nUl6Uv1SrEK2/iQi4QTG4V/W2KNJgOd9YSa/RFiHZRm4BJVTjGELQU+mUy+iJCu8I\npJc5EONB1tm1kZegTMPqepq++CTuVPaBS69SqmK92plFyDBjXAsK9G9M/ChE44uZ\n6sqsWHGHpl3DXgPq8RrZ0fBjKhSQwOu1C8tSRxihoc2S4e+IddYbSwommIvoTXop\nKdAi439THJhas+Lh7jQgPqmkIEEfMZm+0N2z+bD5Glfr/GipYpxo8TAzD69WDbEG\np5SLhdC22+JrNyOwgnybz3Q1jA5OQkn0wQ8QsQIDAQABAoIBAD4eQrcKfQgGYrqn\npV6/yjWXJHtyC/Sx5PCNIvpzRA/asfdX+JTEYVnTRqaHY7XdsImZKSY0RN+PQ6CE\nj1eedRvdRI2t2yPjXcZVCyWq7kNolyry+r6+N4zS8uL0u5lnwjZbRWMNUM2UscwW\n+SyZ5pp1815zeG8I17OwNwZ+HzIbkm+ZUi1Pumt/vf98LY0wMWiB4lljVByMpkS+\n4eaNB4NNzfRhNaDT28HXXF+OLBwGXWtuHb+/kFb9T8j67m4yDd8D+CSHwra1qNKZ\nfXewakDJGGQ8DhisBVLaN0a5xVVGLfuq69BKXqjj6D1/Z33xenHr4FGNoi7DpWdf\nGaF4h38CgYEA36JCC/wzxv+gzWkGV7wrSvnhoUCmwcn2125TU8ZVSvuMiXvK8NCr\nK+ekKe7zKYokRw7SfcoiM1jx8sLT3MKEqvvvMNa0fJl+AuurKX2MurS1XmcQo2OX\nhrUdnXTNa5irKsxItOOr8WbYkWI3jaNgIN4Ue6oppf51M1Zhs2XshesCgYEA9iMX\naHTsA6a1KjsmEXnXSq+ee1LmN5hypt4tZJym94goWmYf62J1+4TswnoNPpAZQY8x\nPkZKHZ0DXR1863KhCpOEJof/OWiJo5MLeFPFVhal/KRb1noAP91RjUUOqExiZnBj\nNW3bwfvxNxE/37qmlkvAfSafrBxh2WszYn66ENMCgYAwt8NVoxKQhn28YeXM1SRF\nSBx8KX5qdxn8In+qn2lTVWtvQ/WY8oxnmyXrMK/uW7a9eCAo4REESJskvIa07/dA\n3HNmG0/kWPfXoQl/l2dCAT4Fm8RHI9oNsYULGTfq+a5IO4qXRYXep/4D5faeN3oo\njti9e/touv9DOM097LVTEwKBgBKbEHfq7rRP873ffr8vcKDKqbY0zAZD1dbbUJ8c\nYFqxxisfMSZ/6N88axFAXKPwDJiyFEzaz1txtQFi60B5B8de40xuV1KlnlHpGaLc\n4jvhtmZknjSWQFKTjkiZgcQjEgUgVb+CMGx3eQJqoWNuHo2Z6FENjGBcPOFMgzPc\n1H/VAoGAZ0YvMn6zvUGNvWW0kXXZY18s0TKq8G6qkPBa67AXjvT7295wuwREGXcd\neCLqV3e2LjFB5i5vMvoscacxkK1lUOVD2zLhubcRwbL1oGTGqRo/+igS+mir6p6K\nQ1syFUO+a/4dELzwYhKpfLVwtbNTufOAIfOKAGrSBXB4tTCVlyw=\n-----END RSA PRIVATE KEY-----'"
+  CMS_OAUTH2_SECRET: "87c43a1a0d93a17b037e5aa4fc437aa2ebe2e0229eda61d1f45ee354727f173e"
+  ID: "5bd9b1689546c4f689d8ccc3c41cae930621d83eabce15c5a2442b265e28bb5e"
+  MYSQL_ROOT_PASSWORD: "99f7b8a7cc578b0dc3b2c181aefcfc6fdba099142f581baece3bbc0b1aa7a6d7"
+  OPENEDX_MYSQL_PASSWORD: "4298bf4b39bfa54a03cc93fc3a601bf7c4d26aac39f655e86166e6865321aecf"
+  OPENEDX_SECRET_KEY: "453defa94ba6de1c57b0ad7d2121a65a561b21edf08fccf5265e9985d9dcd7ac"
+
+tutor_prod_host_config:
+  LMS_HOST: local.overhang.io
+  PREVIEW_LMS_HOST: preview.local.overhang.io
+  CMS_HOST: studio.local.overhang.io
+  MFE_HOST: apps.local.overhang.io

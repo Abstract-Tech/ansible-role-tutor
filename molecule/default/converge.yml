@@ -1,0 +1,11 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  tasks:
+    - name: "Include geerlingguy.docker"
+      ansible.builtin.include_role:
+        name: "geerlingguy.docker"
+    - name: "Include abstract2tech.tutor"
+      ansible.builtin.include_role:
+        name: "abstract2tech.tutor"

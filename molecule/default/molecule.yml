@@ -1,0 +1,14 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: vagrant
+platforms:
+  - name: instance
+    box: generic/ubuntu2204
+    memory: 8192
+    cpus: 4
+provisioner:
+  name: ansible
+verifier:
+  name: ansible
