@@ -3,4 +3,4 @@
   name: Test
   remote_user: root
   roles:
-    - tutor
+    - abstract2tech.tutor

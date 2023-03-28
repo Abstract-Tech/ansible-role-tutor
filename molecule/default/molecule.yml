@@ -1,14 +1,27 @@
 ---
-dependency:
-  name: galaxy
+scenario:
+  name: default
+  test_sequence:
+    - create
+    - converge
+    - verify
+
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
+
 driver:
   name: vagrant
+
 platforms:
   - name: instance
     box: generic/ubuntu2204
     memory: 8192
     cpus: 4
+
 provisioner:
   name: ansible
+
 verifier:
   name: ansible

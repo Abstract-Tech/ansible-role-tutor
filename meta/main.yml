@@ -2,7 +2,7 @@
 
 galaxy_info:
   role_name: tutor
-  author: ishestakov
+  author: abstract2tech
   company: Abstract-Technology GmbH
   description: Tutor Role
   min_ansible_version: 7.3.0
@@ -10,4 +10,4 @@ galaxy_info:
   platforms:
     - name: Ubuntu
       versions:
-        - focal
+        - jammy
