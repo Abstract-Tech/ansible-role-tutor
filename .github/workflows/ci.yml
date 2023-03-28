@@ -1,0 +1,59 @@
+---
+name: CI
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  DOCKER_BUILDX: "1"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+
+      - name: Install requirements
+        run: pip install -r requirements.txt
+
+      - name: Run molecule lint
+        run: molecule lint
+
+  molecule:
+    runs-on: macos-latest  # It's wierd, but nested virtualization is only supported on macos
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Cache Vagrant boxes
+        uses: actions/cache@v2
+        with:
+          path: ~/.vagrant.d/boxes
+          key: ${{ runner.os }}-molecule-${{ hashFiles('molecule/default/molecule.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-molecule-
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+
+      - name: Install python requirements
+        run: pip install -r requirements.txt
+
+      - name: Install geerlingguy.docker role
+        run: ansible-galaxy install geerlingguy.docker
+
+      - name: Run molecule tests
+        run: molecule test
+        env:
+          PY_COLORS: '1'
+          ANSIBLE_FORCE_COLOR: '1'
