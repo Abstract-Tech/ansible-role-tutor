@@ -20,7 +20,7 @@ tutor_skeleton_paths:
 tutor_exec_name: bin/tutor
 tutor_init_arguments: "local do init"
 tutor_start_arguments: "local start"
-tutor_reload_arguments: "local exec lms reload-uwsgi"
+tutor_reload_arguments: "local start -d"
 
 ## Service options
 # Documentation
@@ -64,3 +64,5 @@ tutor_prod_host_config:
   PREVIEW_LMS_HOST: preview.local.overhang.io
   CMS_HOST: studio.local.overhang.io
   MFE_HOST: apps.local.overhang.io
+
+tutor_ssh_key_file: /home/tutor/.ssh/id_rsa
