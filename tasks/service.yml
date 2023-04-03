@@ -7,7 +7,7 @@
     mode: 0644
     owner: root
     group: root
-  notify: Restart tutor
+  notify: Reload tutor
   tags:
     - tutor_service
 

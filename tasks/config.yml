@@ -9,8 +9,6 @@
   become: true
   become_user: "{{ tutor_user }}"
   changed_when: false  # It shouldn't really be changed after install
-  notify:
-    - Restart tutor
   tags:
     - tutor_config
     - tutor_deploy
