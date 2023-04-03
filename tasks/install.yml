@@ -122,20 +122,6 @@
     - tutor_install
     - tutor_deploy
 
-- name: TUTOR | Initialize database
-  ansible.builtin.command: "{{ tutor_venv_path }}/{{ tutor_exec_name }} {{ tutor_init_arguments }}"
-  environment:
-    TUTOR_ROOT: "{{ tutor_config_path }}"
-    TUTOR_PLUGINS_ROOT: "{{ tutor_config_path }}/plugins"
-    TUTOR_APP: "{{ tutor_app }}"
-  when: tutor_force_reinstall or tutor_check is failed or tutor_version not in tutor_check.stdout
-  changed_when: true
-  become: true
-  become_user: "{{ tutor_user }}"
-  tags:
-    - tutor_install
-    - tutor_deploy
-
 - name: TUTOR | Pull all required images
   ansible.builtin.command: "{{ tutor_venv_path }}/{{ tutor_exec_name }} images pull all"
   environment:
