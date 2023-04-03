@@ -1,6 +1,6 @@
 ---
 
-- name: Restart tutor
+- name: Reload tutor
   ansible.builtin.systemd:
     name: tutor
-    state: restarted
+    state: reloaded
