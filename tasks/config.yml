@@ -1,4 +1,22 @@
 ---
+- name: TUTOR | Checkout config repo
+  ansible.builtin.git:
+    repo: "{{ tutor_config_repo }}"
+    dest: "{{ tutor_config_path }}"
+    clone: yes
+    update: yes
+    force: true
+    version: "{{ tutor_config_version }}"
+  register: tutor_checkout_result
+  become: true
+  become_user: "{{ tutor_user }}"
+  changed_when: "tutor_checkout_result.before != tutor_checkout_result.after"
+  notify:
+    - Reload tutor
+  tags:
+    - tutor_config
+    - tutor_deploy
+
 - name: TUTOR | Update config with openedx image
   ansible.builtin.command: "{{ tutor_venv_path }}/{{ tutor_exec_name }} config save --set DOCKER_IMAGE_OPENEDX={{ tutor_openedx_image }}"
   environment:
@@ -11,6 +29,7 @@
   when: tutor_openedx_image is defined
   tags:
     - tutor_config
+    - tutor_deploy
 
 - name: TUTOR | Update config with production settings
   ansible.builtin.command: "{{ tutor_venv_path }}/{{ tutor_exec_name }} config save --set {{ item.key }}={{ item.value | to_yaml }}"
@@ -24,7 +43,7 @@
   changed_when: false  # It shouldn't really be changed after install
   tags:
     - tutor_config
-
+    - tutor_deploy
 
 # TODO: It can be done in one command
 - name: TUTOR | Update config with host-specific secrets
@@ -40,3 +59,4 @@
   changed_when: false  # It shouldn't really be changed after install
   tags:
     - tutor_config
+    - tutor_deploy

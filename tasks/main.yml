@@ -5,6 +5,11 @@
   tags:
     - tutor_install
 
+- name: TUTOR | Update
+  ansible.builtin.import_tasks: update.yml
+  tags:
+    - tutor_update
+
 - name: TUTOR | Configure
   ansible.builtin.import_tasks: config.yml
   environment:
