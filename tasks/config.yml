@@ -8,6 +8,7 @@
   become: true
   become_user: "{{ tutor_user }}"
   changed_when: false  # It woulbe nice to detect change somehow
+  when: tutor_openedx_image is defined
   tags:
     - tutor_config
 
