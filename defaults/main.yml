@@ -47,6 +47,8 @@ tutor_app: tutor
 
 tutor_config_repo: https://github.com/Abstract-Tech/tutor-default
 
+tutor_openedx_image: docker.io/overhangio/openedx:{{ tutor_version }}
+
 tutor_prod_config:
   ENABLE_HTTPS: false
   ENABLE_WEB_PROXY: true

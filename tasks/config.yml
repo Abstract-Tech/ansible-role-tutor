@@ -1,4 +1,16 @@
 ---
+- name: TUTOR | Update config with openedx image
+  ansible.builtin.command: "{{ tutor_venv_path }}/{{ tutor_exec_name }} config save --set {{ tutor_openedx_image }}"
+  environment:
+    TUTOR_ROOT: "{{ tutor_config_path }}"
+    TUTOR_PLUGINS_ROOT: "{{ tutor_config_path }}/plugins"
+    TUTOR_APP: "{{ tutor_app }}"
+  become: true
+  become_user: "{{ tutor_user }}"
+  changed_when: false  # It woulbe nice to detect change somehow
+  tags:
+    - tutor_config
+
 - name: TUTOR | Update config with production settings
   ansible.builtin.command: "{{ tutor_venv_path }}/{{ tutor_exec_name }} config save --set {{ item.key }}={{ item.value | to_yaml }}"
   environment:
@@ -11,7 +23,6 @@
   changed_when: false  # It shouldn't really be changed after install
   tags:
     - tutor_config
-    - tutor_deploy
 
 
 # TODO: It can be done in one command
@@ -28,4 +39,3 @@
   changed_when: false  # It shouldn't really be changed after install
   tags:
     - tutor_config
-    - tutor_deploy
