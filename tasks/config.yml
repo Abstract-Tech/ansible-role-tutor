@@ -1,6 +1,6 @@
 ---
 - name: TUTOR | Update config with openedx image
-  ansible.builtin.command: "{{ tutor_venv_path }}/{{ tutor_exec_name }} config save --set {{ tutor_openedx_image }}"
+  ansible.builtin.command: "{{ tutor_venv_path }}/{{ tutor_exec_name }} config save --set DOCKER_IMAGE_OPENEDX={{ tutor_openedx_image }}"
   environment:
     TUTOR_ROOT: "{{ tutor_config_path }}"
     TUTOR_PLUGINS_ROOT: "{{ tutor_config_path }}/plugins"
