@@ -24,6 +24,9 @@ jobs:
       - name: Install requirements
         run: pip install -r requirements.txt
 
+      - name: Install geerlingguy.docker role
+        run: ansible-galaxy install geerlingguy.docker
+
       - name: Run molecule lint
         run: molecule lint
 
