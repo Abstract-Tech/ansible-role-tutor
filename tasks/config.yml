@@ -60,3 +60,18 @@
   tags:
     - tutor_config
     - tutor_deploy
+
+- name: TUTOR | Run post hooks
+  ansible.builtin.command: "{{ item }}"
+  environment:
+    TUTOR_ROOT: "{{ tutor_config_path }}"
+    TUTOR_PLUGINS_ROOT: "{{ tutor_config_path }}/plugins"
+    TUTOR_APP: "{{ tutor_app }}"
+  loop: "{{ tutor_post_hooks }}"
+  become: true
+  become_user: "{{ tutor_user }}"
+  changed_when: false  # It woulbe nice to detect change somehow
+  when: tutor_post_hooks is defined
+  tags:
+    - tutor_config
+    - tutor_deploy
