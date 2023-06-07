@@ -59,6 +59,10 @@ tutor_secrets:
   OPENEDX_MYSQL_PASSWORD: "4298bf4b39bfa54a03cc93fc3a601bf7c4d26aac39f655e86166e6865321aecf"
   OPENEDX_SECRET_KEY: "453defa94ba6de1c57b0ad7d2121a65a561b21edf08fccf5265e9985d9dcd7ac"
 
+tutor_images:
+  - openedx
+  - mfe
+
 tutor_prod_host_config:
   LMS_HOST: local.overhang.io
   PREVIEW_LMS_HOST: preview.local.overhang.io
