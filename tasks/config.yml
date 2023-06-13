@@ -82,6 +82,7 @@
   become: true
   become_user: "{{ tutor_user }}"
   changed_when: true
+  when: tutor_plugins is defined
   tags:
     - tutor_config
     - tutor_deploy
