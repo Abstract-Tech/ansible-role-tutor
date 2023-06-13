@@ -56,6 +56,7 @@
   no_log: true
   become: true
   become_user: "{{ tutor_user }}"
+  when: tutor_plugins is defined
   changed_when: false  # It shouldn't really be changed after install
   tags:
     - tutor_config
@@ -64,11 +65,13 @@
 - name: TUTOR | Install production plugins
   ansible.builtin.copy:
     content: "{{ item.value }}"
-    dest: "{{ tutor_config_path}}/plugins/{{ item.key  }}.yml"
+    dest: "{{ tutor_config_path }}/plugins/{{ item.key }}.yml"
+    mode: 0700
   loop: "{{ tutor_plugins | dict2items }}"
   no_log: true
   become: true
   become_user: "{{ tutor_user }}"
+  when: tutor_plugins is defined
   tags:
     - tutor_config
     - tutor_deploy
@@ -78,6 +81,7 @@
   ansible.builtin.command: "{{ tutor_venv_path }}/{{ tutor_exec_name }} plugins enable {{ tutor_plugins.keys() | list | join(' ') }}"
   become: true
   become_user: "{{ tutor_user }}"
+  changed_when: true
   tags:
     - tutor_config
     - tutor_deploy
