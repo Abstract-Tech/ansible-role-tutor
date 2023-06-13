@@ -61,6 +61,28 @@
     - tutor_config
     - tutor_deploy
 
+- name: TUTOR | Install production plugins
+  ansible.builtin.copy:
+    content: "{{ item.value }}"
+    dest: "{{ tutor_config_path}}/plugins/{{ item.key  }}.yml"
+  loop: "{{ tutor_plugins | dict2items }}"
+  no_log: true
+  become: true
+  become_user: "{{ tutor_user }}"
+  tags:
+    - tutor_config
+    - tutor_deploy
+    - tutor_plugins
+
+- name: TUTOR | Enable production plugins
+  ansible.builtin.command: "{{ tutor_venv_path }}/{{ tutor_exec_name }} plugins enable {{ tutor_plugins.keys() | list | join(' ') }}"
+  become: true
+  become_user: "{{ tutor_user }}"
+  tags:
+    - tutor_config
+    - tutor_deploy
+    - tutor_plugins
+
 - name: TUTOR | Run post hooks
   ansible.builtin.command: "{{ item }}"
   environment:
