@@ -70,3 +70,5 @@ tutor_prod_host_config:
   MFE_HOST: apps.local.overhang.io
 
 tutor_ssh_key_file: /home/tutor/.ssh/id_rsa
+
+tutor_enable_weekly_goal_emails: false

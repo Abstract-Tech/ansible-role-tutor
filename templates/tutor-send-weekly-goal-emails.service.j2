@@ -1,0 +1,15 @@
+[Unit]
+Description=Send goal reminder emails
+
+[Service]
+Type=oneshot
+ExecStart={{ tutor_venv_path }}/{{ tutor_exec_name }} local dc run lms ./manage.py lms goal_reminder_email
+PrivateTmp={{ tutor_private_tmp }}
+User={{ tutor_user }}
+Group={{ tutor_group }}
+RuntimeDirectory=tutor
+LimitNOFILE={{ tutor_max_files }}
+WorkingDirectory={{ tutor_venv_path }}
+Environment="TUTOR_ROOT={{ tutor_venv_path }}/config"
+Environment="TUTOR_PLUGINS_ROOT={{ tutor_venv_path }}/config/plugins"
+Environment="TUTOR_APP={{ tutor_app }}"

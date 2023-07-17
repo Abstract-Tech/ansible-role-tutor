@@ -1,0 +1,9 @@
+[Unit]
+Description=Send goal reminder emails every 3 hours
+
+[Timer]
+OnCalendar=*-*-* 00/03:00:00
+Unit=tutor-send-weekly-goal-emails.service
+
+[Install]
+WantedBy=timers.target

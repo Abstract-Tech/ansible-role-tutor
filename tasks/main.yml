@@ -18,7 +18,18 @@
   tags:
     - tutor_configure
 
+- name: TUTOR | Init
+  ansible.builtin.import_tasks: init.yml
+  tags:
+    - tutor_init
+
 - name: TUTOR | Service
   ansible.builtin.import_tasks: service.yml
   tags:
     - tutor_service
+
+- name: TUTOR | Weekly goal emails
+  ansible.builtin.import_tasks: wge.yml
+  tags:
+    - tutor_wge
+  when: tutor_enable_weekly_goal_emails
