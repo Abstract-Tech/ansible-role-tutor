@@ -3,7 +3,8 @@
 - name: TUTOR | Ensure tutor group
   ansible.builtin.group:
     name: "{{ tutor_group }}"
-    system: yes
+    system: true
+    local: true
     state: present
   tags:
     - tutor_install
@@ -14,6 +15,7 @@
     group: "{{ tutor_group }}"
     groups:
       - docker
+    local: true
     system: false
     createhome: true
     shell: "{{ tutor_user_shell }}"
