@@ -5,6 +5,11 @@
   tags:
     - tutor_install
 
+- name: TUTOR | SSH
+  ansible.builtin.import_tasks: ssh.yml
+  tags:
+    - tutor_ssh
+
 - name: TUTOR | Update
   ansible.builtin.import_tasks: update.yml
   tags:
