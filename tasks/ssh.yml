@@ -1,6 +1,6 @@
 ---
 - name: Add forge key to known hosts
-  ansible.posix.autorized_keys:
+  ansible.posix.authorized_key:
     path: /etc/ssh/ssh_known_hosts
     name: "{{ git_forge_hostname }}"
     key: "{{ git_forge_keys }}"  # ssh-keyscan
