@@ -61,6 +61,24 @@
     - tutor_config
     - tutor_deploy
 
+- name: TUTOR | Update config with environment-specific secrets
+  ansible.builtin.command: |
+    {{ tutor_venv_path }}/{{ tutor_exec_name }} config save --set {{ item.key }}={{ lookup("env", item.value) | to_yaml }}
+  environment:
+    TUTOR_ROOT: "{{ tutor_config_path }}"
+    TUTOR_PLUGINS_ROOT: "{{ tutor_config_path }}/plugins"
+    TUTOR_APP: "{{ tutor_app }}"
+  loop: "{{ tutor_env_secrets | dict2items }}"
+  when: tutor_env_secrets is defined
+  no_log: true
+  become: true
+  become_user: "{{ tutor_user }}"
+  changed_when: true  # Might change every moment
+  tags:
+    - tutor_config
+    - tutor_env_config
+    - tutor_deploy
+
 - name: TUTOR | Install production plugins
   ansible.builtin.copy:
     content: "{{ item.value }}"
