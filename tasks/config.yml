@@ -3,8 +3,9 @@
   ansible.builtin.git:
     repo: "{{ tutor_config_repo }}"
     dest: "{{ tutor_config_path }}"
-    clone: yes
-    update: yes
+    clone: true
+    update: true
+    recursive: false
     force: true
     version: "{{ tutor_config_version }}"
   register: tutor_checkout_result
