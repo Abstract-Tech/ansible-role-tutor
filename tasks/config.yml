@@ -106,6 +106,20 @@
     - tutor_deploy
     - tutor_plugins
 
+- name: TUTOR | Install compose overrides
+  ansible.builtin.copy:
+    content: "{{ tutor_compose_overrides }}"
+    dest: "{{ tutor_config_path }}/env/local/docker-compose.overrides.yml"
+  become: true
+  become_user: "{{ tutor_user }}"
+  when: tutor_compose_overrides is defined and tutor_compose_overrides != None
+  notify:
+    - Reload tutor
+  tags:
+    - tutor_config
+    - tutor_deploy
+    - tutor_compose
+
 - name: TUTOR | Run post hooks
   ansible.builtin.command: "{{ item }}"
   environment:
