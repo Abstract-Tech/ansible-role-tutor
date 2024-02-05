@@ -109,7 +109,7 @@
 - name: TUTOR | Install compose overrides
   ansible.builtin.copy:
     content: "{{ tutor_compose_overrides }}"
-    dest: "{{ tutor_config_path }}/env/local/docker-compose.overrides.yml"
+    dest: "{{ tutor_config_path }}/env/local/docker-compose.override.yml"
   become: true
   become_user: "{{ tutor_user }}"
   when: tutor_compose_overrides is defined and tutor_compose_overrides != None
