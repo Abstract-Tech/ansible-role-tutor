@@ -32,6 +32,20 @@
     - tutor_config
     - tutor_deploy
 
+- name: TUTOR | Update config with MFE image
+  ansible.builtin.command: "{{ tutor_venv_path }}/{{ tutor_exec_name }} config save --set MFE_DOCKER_IMAGE={{ tutor_mfe_image }}"
+  environment:
+    TUTOR_ROOT: "{{ tutor_config_path }}"
+    TUTOR_PLUGINS_ROOT: "{{ tutor_config_path }}/plugins"
+    TUTOR_APP: "{{ tutor_app }}"
+  become: true
+  become_user: "{{ tutor_user }}"
+  changed_when: false  # It woulbe nice to detect change somehow
+  when: tutor_mfe_image is defined
+  tags:
+    - tutor_config
+    - tutor_deploy
+
 - name: TUTOR | Update config with production settings
   ansible.builtin.command: "{{ tutor_venv_path }}/{{ tutor_exec_name }} config save --set {{ item.key }}={{ item.value | to_yaml }}"
   environment:
