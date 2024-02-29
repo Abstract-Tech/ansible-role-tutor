@@ -40,7 +40,7 @@
     TUTOR_APP: "{{ tutor_app }}"
   become: true
   become_user: "{{ tutor_user }}"
-  changed_when: false  # It woulbe nice to detect change somehow
+  changed_when: true
   when: tutor_mfe_image is defined
   tags:
     - tutor_config
@@ -55,7 +55,7 @@
   loop: "{{ tutor_prod_config | combine(tutor_prod_host_config) | dict2items }}"
   become: true
   become_user: "{{ tutor_user }}"
-  changed_when: false  # It shouldn't really be changed after install
+  changed_when: true
   tags:
     - tutor_config
     - tutor_deploy
