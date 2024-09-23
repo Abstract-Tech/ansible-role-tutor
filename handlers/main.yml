@@ -1,6 +1,5 @@
 ---
 
 - name: Reload tutor
-  ansible.builtin.systemd:
-    name: tutor
-    state: reloaded
+  ansible.builtin.shell:
+    cmd: "{{ tutor_venv_path }}/{{ tutor_exec_name }} {{ tutor_reload_arguments }}"
