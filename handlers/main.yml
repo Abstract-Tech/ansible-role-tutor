@@ -3,3 +3,9 @@
 - name: Reload tutor
   ansible.builtin.shell:
     cmd: "{{ tutor_venv_path }}/{{ tutor_exec_name }} {{ tutor_reload_arguments }}"
+  notify: Post reload
+
+- name: Post reload
+  ansible.builtin.shell:
+    cmd: "{{ item }}"
+  loop: "{{ tutor_post_reload_hooks }}"

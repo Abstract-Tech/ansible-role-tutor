@@ -74,3 +74,5 @@ tutor_ssh_key_file: /home/tutor/.ssh/id_rsa
 tutor_enable_weekly_goal_emails: false
 
 tutor_compose_overrides:
+
+tutor_post_reload_hooks: []
