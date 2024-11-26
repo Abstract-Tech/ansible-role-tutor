@@ -26,7 +26,9 @@
     TUTOR_APP: "{{ tutor_app }}"
   become: true
   become_user: "{{ tutor_user }}"
-  changed_when: false  # It woulbe nice to detect change somehow
+  changed_when: true
+  notify:
+    - Reload tutor
   when: tutor_openedx_image is defined
   tags:
     - tutor_config
@@ -41,6 +43,8 @@
   become: true
   become_user: "{{ tutor_user }}"
   changed_when: true
+  notify:
+    - Reload tutor
   when: tutor_mfe_image is defined
   tags:
     - tutor_config
