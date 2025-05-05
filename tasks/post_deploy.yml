@@ -1,5 +1,5 @@
 ---
- ## Here is describe post deploy action, like cleanup, liveness, readiness probes, etc.
+# Here is describe post deploy action, like cleanup, liveness, readiness probes, etc.
 
 - name: SYSTEM | Docker cleanup after deploy
   ansible.builtin.command: docker system prune -a -f
