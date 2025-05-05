@@ -1,12 +1,10 @@
 ---
-##Here is describe post deploy action, like cleanup, liveness, readiness probes, etc.
+ ## Here is describe post deploy action, like cleanup, liveness, readiness probes, etc.
 
 - name: SYSTEM | Docker cleanup after deploy
-  community.docker.docker_prune:
-    system: yes
-    all: yes
-    force: yes
+  ansible.builtin.command: docker system prune -a -f
   become: true
   become_user: "{{ tutor_user }}"
+  changed_when: true
   tags:
     - tutor_post_deploy
