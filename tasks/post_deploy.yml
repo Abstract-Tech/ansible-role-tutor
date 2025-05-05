@@ -1,3 +1,4 @@
+---
 ##Here is describe post deploy action, like cleanup, liveness, readiness probes, etc.
 
 - name: SYSTEM | Docker cleanup after deploy
