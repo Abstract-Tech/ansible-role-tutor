@@ -38,3 +38,8 @@
   tags:
     - tutor_wge
   when: tutor_enable_weekly_goal_emails
+
+- name: Include post-deploy tasks
+  ansible.builtin.import_tasks: post_deploy.yml
+  tags:
+    - tutor_post_deploy
