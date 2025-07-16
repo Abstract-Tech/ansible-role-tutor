@@ -1,5 +1,4 @@
 ---
-
 - name: TUTOR | Pull all required images
   ansible.builtin.command: "{{ tutor_venv_path }}/{{ tutor_exec_name }} images pull {{ tutor_images | join(' ') }}"
   environment:

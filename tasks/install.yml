@@ -1,5 +1,4 @@
 ---
-
 - name: TUTOR | Ensure tutor group
   ansible.builtin.group:
     name: "{{ tutor_group }}"
@@ -25,7 +24,7 @@
 - name: TUTOR | Ensure .ssh directory exists.
   ansible.builtin.file:
     dest: "{{ tutor_ssh_key_file | dirname }}"
-    mode: 0700
+    mode: "0700"
     owner: "{{ tutor_user }}"
     state: directory
   tags:
@@ -37,7 +36,7 @@
   ansible.builtin.copy:
     content: "{{ tutor_ssh_key }}"
     dest: "{{ tutor_ssh_key_file }}"
-    mode: 0600
+    mode: "0600"
     owner: "{{ tutor_user }}"
   tags:
     - tutor_install
@@ -60,7 +59,7 @@
   become_user: "{{ tutor_user }}"
   changed_when: false
   ignore_errors: true
-  check_mode: no
+  check_mode: false
   tags:
     - tutor_install
     - tutor_deploy
@@ -84,8 +83,8 @@
 - name: TUTOR | Create virtualenv directory
   ansible.builtin.file:
     path: /opt/tutor
-    recurse: yes
-    mode: 'u+rwx'
+    recurse: true
+    mode: "u+rwx"
     owner: "{{ tutor_user }}"
     group: "{{ tutor_group }}"
   when: tutor_force_reinstall or tutor_check is failed or tutor_version not in tutor_check.stdout

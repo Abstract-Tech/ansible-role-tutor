@@ -1,5 +1,4 @@
 ---
-
 - name: Reload tutor
   ansible.builtin.systemd:
     name: tutor

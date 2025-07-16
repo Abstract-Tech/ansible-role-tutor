@@ -2,10 +2,9 @@
 name: CI
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
-
+    branches: ["main"]
 env:
   DOCKER_BUILDX: "1"
 
@@ -31,7 +30,7 @@ jobs:
         run: molecule lint
 
   molecule:
-    runs-on: macos-latest  # It's wierd, but nested virtualization is only supported on macos
+    runs-on: macos-latest # It's wierd, but nested virtualization is only supported on macos
 
     steps:
       - uses: actions/checkout@v3
@@ -58,5 +57,5 @@ jobs:
       - name: Run molecule tests
         run: molecule test
         env:
-          PY_COLORS: '1'
-          ANSIBLE_FORCE_COLOR: '1'
+          PY_COLORS: "1"
+          ANSIBLE_FORCE_COLOR: "1"

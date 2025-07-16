@@ -1,10 +1,9 @@
 ---
-
 - name: TUTOR | Copy Daemon script
   ansible.builtin.template:
     src: tutor.service.j2
     dest: /etc/systemd/system/tutor.service
-    mode: 0644
+    mode: "0644"
     owner: root
     group: root
   notify: Reload tutor
@@ -16,6 +15,6 @@
     name: tutor
     state: "{{ tutor_service_state }}"
     enabled: "{{ tutor_service_enabled }}"
-    daemon_reload: yes
+    daemon_reload: true
   tags:
     - tutor_service

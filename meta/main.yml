@@ -1,16 +1,43 @@
+# This file defines the metadata and dependencies for the Ansible role 'ansible-role-tutor'.
+#
+# Dependencies:
+#   - None specified (empty list)
+#
+# Galaxy Information:
+#   - Author: abstract2tech
+#   - Namespace: abstract2tech
+#   - Description: Deploys and configures Open edX platform using Tutor
+#   - Company: Abstract Technology
+#   - License: Apache License 2.0
+#   - Minimum Ansible Version: 2.14
+#   - Supported Platforms:
+#     * Ubuntu 20.04 (Focal Fossa)
+#     * Ubuntu 22.04 (Jammy Jellyfish)
+#   - Tags: education, openedx, tutor
+#
+# Required Collections:
+#   - community.general: Provides additional modules and plugins
+#   - ansible.posix: Provides POSIX-compliant modules for Unix-like systems
 ---
-
+dependencies: []
 galaxy_info:
   role_name: tutor
   author: abstract2tech
-  company: Abstract-Technology GmbH
-  description: Tutor Role
-  min_ansible_version: 7.3.0
-  license: Apache 2.0
+  namespace: abstract2tech
+  description: A role to deploy & configure openedx managed by tutor
+  company: Abstract Technology
+  license: Apache License 2.0
+  min_ansible_version: "2.14"
   platforms:
     - name: Ubuntu
       versions:
+        - focal
         - jammy
+  galaxy_tags:
+    - education
+    - openedx
+    - tutor
 
-dependencies:
-  - role: geerlingguy.docker
+collections:
+  - community.general
+  - ansible.posix

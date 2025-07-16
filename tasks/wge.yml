@@ -3,13 +3,13 @@
   ansible.builtin.template:
     src: tutor-send-weekly-goal-emails.service.j2
     dest: /etc/systemd/system/tutor-send-weekly-goal-emails.service
-    mode: 0755
+    mode: "0755"
 
 - name: Deploy WGE systemd timer
   ansible.builtin.template:
     src: tutor-send-weekly-goal-emails.timer.j2
     dest: /etc/systemd/system/tutor-send-weekly-goal-emails.timer
-    mode: 0755
+    mode: "0755"
 
 - name: Enable WGE systemd timer
   ansible.builtin.systemd:

@@ -46,9 +46,11 @@
     - tutor_aspects
 
 - name: ASPECTS | Update plugin and configure
+  tags:
+    - tutor_aspects
   when: tutor_aspects_update | default('false') | bool
   block:
-    #TBD: Check without installing the plugin if it is already installed
+    # TBD: Check without installing the plugin if it is already installed
     # - name: ASPECTS | Install tutor-contrib-aspects plugin
     #   ansible.builtin.pip:
     #     name: "tutor-contrib-aspects=={{ tutor_aspects_version }}"
@@ -60,7 +62,7 @@
 
     # - name: ASPECTS | Enable aspects plugin
     #   ansible.builtin.command: |
-    #     {{ tutor_venv_path }}/bin/tutor plugins enable aspects platform-plugin-aspects 
+    #     {{ tutor_venv_path }}/bin/tutor plugins enable aspects platform-plugin-aspects
     #   environment:
     #     TUTOR_ROOT: "{{ tutor_config_path }}"
     #     TUTOR_PLUGINS_ROOT: "{{ tutor_config_path }}/plugins"
@@ -116,8 +118,8 @@
       register: aspects_init
       changed_when: true
       # This command might take a while
-      async: 1800  # 30 minutes timeout
-      poll: 30     # Check every 30 seconds
+      async: 1800 # 30 minutes timeout
+      poll: 30 # Check every 30 seconds
 
     - name: ASPECTS | Display initialization result
       ansible.builtin.debug:
@@ -128,7 +130,7 @@
     - name: ASPECTS | Handle errors
       ansible.builtin.debug:
         msg: "Error during Aspects update: {{ ansible_failed_result.msg | default('Unknown error') }}"
-      
+
     - name: ASPECTS | Ensure tutor is started even on failure
       ansible.builtin.command: |
         {{ tutor_venv_path }}/bin/tutor local start -d
@@ -138,6 +140,4 @@
       become: true
       become_user: "{{ tutor_user }}"
       failed_when: false
-
-  tags:
-    - tutor_aspects
+      changed_when: false

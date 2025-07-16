@@ -75,7 +75,7 @@
   no_log: true
   become: true
   become_user: "{{ tutor_user }}"
-  changed_when: false  # It shouldn't really be changed after install
+  changed_when: false # It shouldn't really be changed after install
   tags:
     - tutor_config
     - tutor_deploy
@@ -92,7 +92,7 @@
   no_log: true
   become: true
   become_user: "{{ tutor_user }}"
-  changed_when: true  # Might change every moment
+  changed_when: true # Might change every moment
   tags:
     - tutor_config
     - tutor_env_config
@@ -102,7 +102,7 @@
   ansible.builtin.copy:
     content: "{{ item.value }}"
     dest: "{{ tutor_config_path }}/plugins/{{ item.key }}.yml"
-    mode: 0700
+    mode: "0700"
   loop: "{{ tutor_plugins | dict2items }}"
   no_log: true
   become: true
@@ -148,7 +148,7 @@
   loop: "{{ tutor_post_hooks }}"
   become: true
   become_user: "{{ tutor_user }}"
-  changed_when: false  # It woulbe nice to detect change somehow
+  changed_when: false # It woulbe nice to detect change somehow
   when: tutor_post_hooks is defined
   tags:
     - tutor_config

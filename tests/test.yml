@@ -1,6 +1,6 @@
 ---
-- hosts: localhost
-  name: Test
+- name: Test playbook
+  hosts: all
   remote_user: root
   roles:
     - abstract2tech.tutor

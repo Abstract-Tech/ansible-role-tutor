@@ -1,5 +1,4 @@
 ---
-
 - name: TUTOR | Start local instance
   ansible.builtin.command: "{{ tutor_venv_path }}/{{ tutor_exec_name }} {{ tutor_start_arguments }}"
   environment:
