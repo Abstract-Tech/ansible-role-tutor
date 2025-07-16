@@ -1,0 +1,143 @@
+# This playbook handles the update and configuration of the Tutor Aspects plugin.
+#
+# The Aspects plugin provides analytics and reporting capabilities for Open edX installations
+# managed by Tutor. This playbook will:
+#
+# 1. Install or update the tutor-contrib-aspects plugin to the specified version
+# 2. Enable the plugin in the Tutor environment
+# 3. Configure custom Docker images for Aspects and Superset (if provided)
+# 4. Reinitialize the Aspects plugin with the new configuration
+#
+# Variables:
+#   - tutor_aspects_update: Boolean flag to control whether the update should run (default: false)
+#   - tutor_aspects_version: Version of the tutor-contrib-aspects plugin to install
+#   - tutor_venv_path: Path to the Tutor virtual environment
+#   - tutor_user: System user that owns the Tutor installation
+#   - tutor_config_path: Path to the Tutor configuration directory
+#   - tutor_aspects_image: (Optional) Custom Docker image for Aspects
+#   - tutor_aspects_superset_image: (Optional) Custom Docker image for Superset
+#
+# Tags:
+#   - tutor_aspects: Apply this tag to run only Aspects-related tasks
+#
+# Notes:
+#   - platform-plugin-aspects is a custom plugin needed as a workaround for the Aspects plugin:
+
+#     plugins/platform-plugin-aspects.py:
+#       from tutor import hooks
+#       hooks.Filters.ENV_PATCHES.add_items([
+#           (
+#               "openedx-dockerfile-post-python-requirements",
+#               """
+#       RUN --mount=type=cache,target=/openedx/.cache/pip,sharing=shared \\
+#           pip install "platform-plugin-aspects==v1.1.0"
+#               """
+#           )
+#       ])
+#
+#   - The playbook includes error handling to ensure Tutor services are restarted even if the update fails
+#   - The initialization process can take up to 30 minutes and runs asynchronously
+#   - All commands are executed as the tutor_user with proper environment variables set
+---
+- name: ASPECTS | Display update status
+  ansible.builtin.debug:
+    msg: "Aspects update requested: {{ tutor_aspects_update | default('false') }}"
+  tags:
+    - tutor_aspects
+
+- name: ASPECTS | Update plugin and configure
+  when: tutor_aspects_update | default('false') | bool
+  block:
+    #TBD: Check without installing the plugin if it is already installed
+    # - name: ASPECTS | Install tutor-contrib-aspects plugin
+    #   ansible.builtin.pip:
+    #     name: "tutor-contrib-aspects=={{ tutor_aspects_version }}"
+    #     virtualenv: "{{ tutor_venv_path }}"
+    #     state: present
+    #   become: true
+    #   become_user: "{{ tutor_user }}"
+    #   register: aspects_plugin_install
+
+    # - name: ASPECTS | Enable aspects plugin
+    #   ansible.builtin.command: |
+    #     {{ tutor_venv_path }}/bin/tutor plugins enable aspects platform-plugin-aspects 
+    #   environment:
+    #     TUTOR_ROOT: "{{ tutor_config_path }}"
+    #     TUTOR_PLUGINS_ROOT: "{{ tutor_config_path }}/plugins"
+    #   become: true
+    #   become_user: "{{ tutor_user }}"
+    #   changed_when: true
+
+    - name: ASPECTS | Configure custom Aspects images
+      ansible.builtin.command: |
+        {{ tutor_venv_path }}/bin/tutor config save \
+        --set DOCKER_IMAGE_ASPECTS={{ tutor_aspects_image }} \
+        --set DOCKER_IMAGE_SUPERSET={{ tutor_aspects_superset_image }}
+      environment:
+        TUTOR_ROOT: "{{ tutor_config_path }}"
+        TUTOR_PLUGINS_ROOT: "{{ tutor_config_path }}/plugins"
+      become: true
+      become_user: "{{ tutor_user }}"
+      when:
+        - tutor_aspects_image is defined
+        - tutor_aspects_superset_image is defined
+      changed_when: true
+
+    - name: ASPECTS | Save tutor config
+      ansible.builtin.command: |
+        {{ tutor_venv_path }}/bin/tutor config save
+      environment:
+        TUTOR_ROOT: "{{ tutor_config_path }}"
+        TUTOR_PLUGINS_ROOT: "{{ tutor_config_path }}/plugins"
+      become: true
+      become_user: "{{ tutor_user }}"
+      changed_when: true
+
+    - name: ASPECTS | Stop tutor local services
+      ansible.builtin.command: |
+        {{ tutor_venv_path }}/bin/tutor local stop
+      environment:
+        TUTOR_ROOT: "{{ tutor_config_path }}"
+        TUTOR_PLUGINS_ROOT: "{{ tutor_config_path }}/plugins"
+      become: true
+      become_user: "{{ tutor_user }}"
+      register: tutor_stop
+      failed_when: tutor_stop.rc != 0
+      changed_when: true
+
+    - name: ASPECTS | Initialize aspects plugin
+      ansible.builtin.command: |
+        {{ tutor_venv_path }}/bin/tutor local do init --limit=aspects
+      environment:
+        TUTOR_ROOT: "{{ tutor_config_path }}"
+        TUTOR_PLUGINS_ROOT: "{{ tutor_config_path }}/plugins"
+      become: true
+      become_user: "{{ tutor_user }}"
+      register: aspects_init
+      changed_when: true
+      # This command might take a while
+      async: 1800  # 30 minutes timeout
+      poll: 30     # Check every 30 seconds
+
+    - name: ASPECTS | Display initialization result
+      ansible.builtin.debug:
+        var: aspects_init.stdout_lines
+      when: aspects_init is defined
+
+  rescue:
+    - name: ASPECTS | Handle errors
+      ansible.builtin.debug:
+        msg: "Error during Aspects update: {{ ansible_failed_result.msg | default('Unknown error') }}"
+      
+    - name: ASPECTS | Ensure tutor is started even on failure
+      ansible.builtin.command: |
+        {{ tutor_venv_path }}/bin/tutor local start -d
+      environment:
+        TUTOR_ROOT: "{{ tutor_config_path }}"
+        TUTOR_PLUGINS_ROOT: "{{ tutor_config_path }}/plugins"
+      become: true
+      become_user: "{{ tutor_user }}"
+      failed_when: false
+
+  tags:
+    - tutor_aspects

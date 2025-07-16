@@ -39,7 +39,13 @@
     - tutor_wge
   when: tutor_enable_weekly_goal_emails
 
-- name: Include post-deploy tasks
+- name: TUTOR | Include post-deploy tasks
   ansible.builtin.import_tasks: post_deploy.yml
   tags:
     - tutor_post_deploy
+
+- name: ASPECTS | Include Aspects update tasks
+  ansible.builtin.include_tasks: aspects_update.yml
+  when: tutor_aspects_update | default(false) | bool
+  tags:
+    - tutor_aspects
