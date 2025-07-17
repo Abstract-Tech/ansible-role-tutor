@@ -56,7 +56,7 @@ jobs:
         run: ansible-galaxy collection install community.general ansible.posix
 
       - name: Run molecule test
-        run: molecule test --scenario-name default --driver-name docker
+        run: molecule test
         env:
           PY_COLORS: "1"
           ANSIBLE_FORCE_COLOR: "1"
