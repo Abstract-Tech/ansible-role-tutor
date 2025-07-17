@@ -29,11 +29,14 @@ jobs:
       - name: Install required collections
         run: ansible-galaxy collection install community.general ansible.posix
 
-      - name: Run molecule lint
-        run: molecule lint
+      - name: Run yamllint
+        run: yamllint .
+
+      - name: Run ansible-lint
+        run: ansible-lint
 
   molecule:
-    runs-on: ubuntu-latest # It's wierd, but nested virtualization is only supported on macos
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -52,8 +55,8 @@ jobs:
       - name: Install required collections
         run: ansible-galaxy collection install community.general ansible.posix
 
-      - name: Run molecule tests
-        run: molecule test
+      - name: Run molecule test
+        run: molecule test --scenario-name default --driver-name docker
         env:
           PY_COLORS: "1"
           ANSIBLE_FORCE_COLOR: "1"
