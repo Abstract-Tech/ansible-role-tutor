@@ -1,0 +1,35 @@
+---
+- name: Prepare
+  hosts: all
+  become: true
+  tasks:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Install required packages
+      ansible.builtin.package:
+        name:
+          - python3-pip
+          - python3-setuptools
+          - git
+          - curl
+          - ca-certificates
+          - gnupg
+          - lsb-release
+        state: present
+
+    - name: Verify Docker is accessible
+      ansible.builtin.command: docker version
+      register: docker_version
+      changed_when: false
+
+    - name: Show Docker version
+      ansible.builtin.debug:
+        msg: "Docker version: {{ docker_version.stdout_lines[0] }}"
+
+    - name: Ensure Docker socket permissions
+      ansible.builtin.file:
+        path: /var/run/docker.sock
+        mode: "0666"

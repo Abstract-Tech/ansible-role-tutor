@@ -50,7 +50,6 @@
     - tutor_aspects
   when: tutor_aspects_update | default('false') | bool
   block:
-
     - name: ASPECTS | Install tutor-contrib-aspects plugin
       ansible.builtin.pip:
         name: "tutor-contrib-aspects=={{ tutor_aspects_version }}"

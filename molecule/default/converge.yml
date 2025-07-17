@@ -2,10 +2,22 @@
 - name: Converge
   hosts: all
   become: true
+  vars:
+    tutor_service_enabled: false
+    tutor_service_state: stopped
+
+  pre_tasks:
+    - name: Install Docker role
+      ansible.builtin.include_role:
+        name: geerlingguy.docker
+      vars:
+        docker_install_compose_plugin: true
+        docker_service_enabled: false
+        docker_service_state: started
+        docker_users:
+          - "{{ tutor_user }}"
+
   tasks:
-    - name: "Include geerlingguy.docker"
+    - name: Include tutor role with default values
       ansible.builtin.include_role:
-        name: "geerlingguy.docker"
-    - name: "Include abstract2tech.tutor"
-      ansible.builtin.include_role:
-        name: "abstract2tech.tutor"
+        name: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') | basename }}"
