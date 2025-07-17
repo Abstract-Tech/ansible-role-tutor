@@ -109,7 +109,7 @@
 
     - name: ASPECTS | Initialize aspects plugin
       ansible.builtin.command: |
-        {{ tutor_venv_path }}/bin/tutor local do init --limit=aspects
+        {{ tutor_venv_path }}/bin/tutor local do init
       environment:
         TUTOR_ROOT: "{{ tutor_config_path }}"
         TUTOR_PLUGINS_ROOT: "{{ tutor_config_path }}/plugins"
