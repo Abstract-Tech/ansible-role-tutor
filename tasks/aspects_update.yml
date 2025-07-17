@@ -50,25 +50,25 @@
     - tutor_aspects
   when: tutor_aspects_update | default('false') | bool
   block:
-    # TBD: Check without installing the plugin if it is already installed
-    # - name: ASPECTS | Install tutor-contrib-aspects plugin
-    #   ansible.builtin.pip:
-    #     name: "tutor-contrib-aspects=={{ tutor_aspects_version }}"
-    #     virtualenv: "{{ tutor_venv_path }}"
-    #     state: present
-    #   become: true
-    #   become_user: "{{ tutor_user }}"
-    #   register: aspects_plugin_install
 
-    # - name: ASPECTS | Enable aspects plugin
-    #   ansible.builtin.command: |
-    #     {{ tutor_venv_path }}/bin/tutor plugins enable aspects platform-plugin-aspects
-    #   environment:
-    #     TUTOR_ROOT: "{{ tutor_config_path }}"
-    #     TUTOR_PLUGINS_ROOT: "{{ tutor_config_path }}/plugins"
-    #   become: true
-    #   become_user: "{{ tutor_user }}"
-    #   changed_when: true
+    - name: ASPECTS | Install tutor-contrib-aspects plugin
+      ansible.builtin.pip:
+        name: "tutor-contrib-aspects=={{ tutor_aspects_version }}"
+        virtualenv: "{{ tutor_venv_path }}"
+        state: present
+      become: true
+      become_user: "{{ tutor_user }}"
+      register: aspects_plugin_install
+
+    - name: ASPECTS | Enable aspects plugin
+      ansible.builtin.command: |
+        {{ tutor_venv_path }}/bin/tutor plugins enable aspects platform-plugin-aspects
+      environment:
+        TUTOR_ROOT: "{{ tutor_config_path }}"
+        TUTOR_PLUGINS_ROOT: "{{ tutor_config_path }}/plugins"
+      become: true
+      become_user: "{{ tutor_user }}"
+      changed_when: true
 
     - name: ASPECTS | Configure custom Aspects images
       ansible.builtin.command: |
