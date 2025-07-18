@@ -1,0 +1,17 @@
+---
+# Ansible Galaxy requirements for Tutor role
+# Last updated: July 18, 2025
+
+roles:
+  - name: geerlingguy.docker
+    version: "7.1.0" # Latest stable, tested
+    # Used for: installing Docker and configuring Docker Engine
+
+collections:
+  - name: community.general
+    version: "8.6.0" # Latest stable, tested
+    # Used for: docker_container, etc.
+
+  - name: ansible.posix
+    version: "1.6.2" # Latest stable, tested
+    # Used for: file permissions, systemd service management
