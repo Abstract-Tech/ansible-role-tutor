@@ -8,18 +8,6 @@
     tutor_init_arguments: "--non-interactive"
     tutor_force_reinstall: true
 
-  pre_tasks:
-    - name: Install Docker role
-      ansible.builtin.include_role:
-        name: geerlingguy.docker
-      vars:
-        docker_install_compose_plugin: true
-        docker_service_enabled: false
-        docker_service_state: started
-        docker_users:
-          - "{{ tutor_user }}"
-          - root
-
   tasks:
     - name: Load default variables
       ansible.builtin.include_vars:

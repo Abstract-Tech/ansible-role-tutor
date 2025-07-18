@@ -18,5 +18,4 @@
           - ca-certificates
           - gnupg
           - lsb-release
-          - docker.io
         state: present
