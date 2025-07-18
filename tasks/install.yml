@@ -3,7 +3,7 @@
   ansible.builtin.group:
     name: "{{ tutor_group }}"
     system: true
-    local: true
+    local: "{{ tutor_user_local_management | default(true) }}"
     state: present
   tags:
     - tutor_install
@@ -14,7 +14,7 @@
     group: "{{ tutor_group }}"
     groups:
       - docker
-    local: true
+    local: "{{ tutor_user_local_management | default(true) }}"
     system: false
     createhome: true
     shell: "{{ tutor_user_shell }}"
