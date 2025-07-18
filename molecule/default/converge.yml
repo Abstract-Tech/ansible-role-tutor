@@ -15,4 +15,4 @@
 
     - name: Include tutor role
       ansible.builtin.include_role:
-        name: tutor
+        name: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') | basename }}"
