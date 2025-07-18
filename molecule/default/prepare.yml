@@ -20,6 +20,16 @@
           - lsb-release
         state: present
 
+    - name: Install geerlingguy.docker role
+      ansible.builtin.command: |
+        ansible-galaxy role install geerlingguy.docker
+      changed_when: false
+
+    - name: Install required collections
+      ansible.builtin.command: |
+        ansible-galaxy collection install community.general ansible.posix
+      changed_when: false
+
     - name: Verify Docker is accessible
       ansible.builtin.command: docker version
       register: docker_version

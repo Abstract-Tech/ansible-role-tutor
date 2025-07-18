@@ -2,7 +2,7 @@
 dependency:
   name: galaxy
   options:
-    requirements-file: ${MOLECULE_PROJECT_DIRECTORY}/requirements.yml
+    role-file: /dev/null
 
 driver:
   name: docker
@@ -38,6 +38,10 @@ provisioner:
       instance:
         ansible_user: root
         docker_service_manage: false
+  playbooks:
+    prepare: prepare.yml
+    converge: converge.yml
+    verify: verify.yml
 
 verifier:
   name: ansible
@@ -45,7 +49,6 @@ verifier:
 scenario:
   name: default
   test_sequence:
-    - dependency
     - create
     - prepare
     - converge
