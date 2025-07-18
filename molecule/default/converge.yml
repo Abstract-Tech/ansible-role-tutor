@@ -5,6 +5,8 @@
   vars:
     tutor_service_enabled: false
     tutor_service_state: stopped
+    tutor_init_arguments: "--non-interactive"
+    tutor_force_reinstall: true
 
   pre_tasks:
     - name: Install Docker role
@@ -12,12 +14,17 @@
         name: geerlingguy.docker
       vars:
         docker_install_compose_plugin: true
-        docker_service_enabled: false
+        docker_service_enabled: false 
         docker_service_state: started
         docker_users:
           - "{{ tutor_user }}"
+          - root 
 
   tasks:
-    - name: Include tutor role with default values
+    - name: Load default variables
+      ansible.builtin.include_vars:
+        file: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/defaults/main.yml"
+
+    - name: Include tutor role
       ansible.builtin.include_role:
-        name: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') | basename }}"
+        name: tutor

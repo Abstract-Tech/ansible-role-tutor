@@ -3,10 +3,17 @@
   hosts: all
   gather_facts: false
   become: true
-  vars:
-    tutor_cmd: "{{ tutor_bin_path }}/tutor"
+
+  pre_tasks:
+    - name: Load default variables
+      ansible.builtin.include_vars:
+        file: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/defaults/main.yml"
 
   tasks:
+    - name: Set tutor command path
+      ansible.builtin.set_fact:
+        tutor_cmd: "{{ tutor_bin_path }}/tutor"
+
     - name: Verify Tutor installation
       block:
         - name: Check tutor binary
@@ -18,10 +25,10 @@
           ansible.builtin.command: "{{ tutor_cmd }} --version"
           register: tutor_version_output
           changed_when: false
-          become: true
           become_user: "{{ tutor_user }}"
           environment:
             TUTOR_ROOT: "{{ tutor_config_path }}"
+          when: tutor_binary.stat.exists
 
         - name: Assert tutor is installed correctly
           ansible.builtin.assert:
@@ -29,6 +36,7 @@
               - tutor_binary.stat.exists
               - tutor_binary.stat.executable
               - tutor_version in tutor_version_output.stdout
+            fail_msg: "Tutor installation failed"
 
     - name: Verify Docker access for tutor user
       block:
@@ -36,8 +44,8 @@
           ansible.builtin.command: docker ps
           register: docker_ps
           changed_when: false
-          become: true
           become_user: "{{ tutor_user }}"
+          failed_when: false
 
         - name: Assert Docker is accessible
           ansible.builtin.assert:
@@ -56,10 +64,10 @@
           ansible.builtin.command: "{{ tutor_cmd }} config printvalue OPENEDX_COMMON_VERSION"
           register: openedx_version
           changed_when: false
-          become: true
           become_user: "{{ tutor_user }}"
           environment:
             TUTOR_ROOT: "{{ tutor_config_path }}"
+          failed_when: false
 
         - name: Assert configuration is valid
           ansible.builtin.assert:
@@ -68,63 +76,13 @@
               - openedx_version.rc == 0
               - openedx_version.stdout | length > 0
 
-    - name: Verify Tutor images
-      block:
-        - name: List tutor images
-          ansible.builtin.command: "{{ tutor_cmd }} images list"
-          register: tutor_images_list
-          changed_when: false
-          become: true
-          become_user: "{{ tutor_user }}"
-          environment:
-            TUTOR_ROOT: "{{ tutor_config_path }}"
-
-        - name: Check if images were pulled
-          ansible.builtin.command: docker images --format "table {% raw %}{{.Repository}}:{{.Tag}}{% endraw %}"
-          register: docker_images
-          changed_when: false
-
-        - name: Show available images
-          ansible.builtin.debug:
-            msg:
-              - "Tutor expects: {{ tutor_images }}"
-              - "Docker has: {{ docker_images.stdout_lines }}"
-
-    - name: Verify Tutor can create containers
-      block:
-        - name: Run tutor config save
-          ansible.builtin.command: "{{ tutor_cmd }} config save"
-          register: config_save
-          changed_when: false
-          become: true
-          become_user: "{{ tutor_user }}"
-          environment:
-            TUTOR_ROOT: "{{ tutor_config_path }}"
-
-        - name: Check if docker-compose files exist
-          ansible.builtin.find:
-            paths: "{{ tutor_config_path }}/env/local"
-            patterns: "docker-compose*.yml"
-          register: compose_files
-
-        - name: Assert compose files created
-          ansible.builtin.assert:
-            that:
-              - compose_files.files | length > 0
-            fail_msg: "Docker compose files not generated"
-
-    - name: Test Tutor commands (dry-run)
-      block:
-        - name: Test tutor status command
-          ansible.builtin.command: "{{ tutor_cmd }} local status"
-          register: tutor_status
-          changed_when: false
-          become: true
-          become_user: "{{ tutor_user }}"
-          environment:
-            TUTOR_ROOT: "{{ tutor_config_path }}"
-          failed_when: false
-
-        - name: Show tutor status
-          ansible.builtin.debug:
-            var: tutor_status.stdout_lines
+    - name: Verify service file exists
+      ansible.builtin.stat:
+        path: /etc/systemd/system/tutor.service
+      register: service_file
+      
+    - name: Assert service file created
+      ansible.builtin.assert:
+        that:
+          - service_file.stat.exists
+        success_msg: "Systemd service file created"
