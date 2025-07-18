@@ -25,6 +25,7 @@
           ansible.builtin.command: "{{ tutor_cmd }} --version"
           register: tutor_version_output
           changed_when: false
+          become: true
           become_user: "{{ tutor_user }}"
           environment:
             TUTOR_ROOT: "{{ tutor_config_path }}"
@@ -44,6 +45,7 @@
           ansible.builtin.command: docker ps
           register: docker_ps
           changed_when: false
+          become: true
           become_user: "{{ tutor_user }}"
           failed_when: false
 
@@ -64,6 +66,7 @@
           ansible.builtin.command: "{{ tutor_cmd }} config printvalue OPENEDX_COMMON_VERSION"
           register: openedx_version
           changed_when: false
+          become: true
           become_user: "{{ tutor_user }}"
           environment:
             TUTOR_ROOT: "{{ tutor_config_path }}"
@@ -80,7 +83,7 @@
       ansible.builtin.stat:
         path: /etc/systemd/system/tutor.service
       register: service_file
-      
+
     - name: Assert service file created
       ansible.builtin.assert:
         that:

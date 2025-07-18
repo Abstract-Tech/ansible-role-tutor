@@ -14,11 +14,11 @@
         name: geerlingguy.docker
       vars:
         docker_install_compose_plugin: true
-        docker_service_enabled: false 
+        docker_service_enabled: false
         docker_service_state: started
         docker_users:
           - "{{ tutor_user }}"
-          - root 
+          - root
 
   tasks:
     - name: Load default variables
