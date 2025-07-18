@@ -19,7 +19,6 @@
 #   - community.general: Provides additional modules and plugins
 #   - ansible.posix: Provides POSIX-compliant modules for Unix-like systems
 ---
-dependencies: []
 galaxy_info:
   role_name: tutor
   author: abstract2tech
@@ -37,6 +36,11 @@ galaxy_info:
     - education
     - openedx
     - tutor
+
+dependencies:
+  - role: geerlingguy.docker
+    version: "7.4.7" # Latest stable, tested
+    # Used for: installing Docker and configuring Docker Engine
 
 collections:
   - community.general
