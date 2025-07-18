@@ -30,6 +30,23 @@
         ansible-galaxy collection install community.general ansible.posix
       changed_when: false
 
+    - name: Check if docker binary exists
+      ansible.builtin.command: which docker
+      register: docker_path
+      ignore_errors: true
+      changed_when: false
+
+    - name: "Docker binary path"
+      ansible.builtin.debug:
+        var: docker_path
+
+    - name: Add user to docker group
+      ansible.builtin.user:
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: true
+      become: true
+
     - name: Verify Docker is accessible
       ansible.builtin.command: docker version
       register: docker_version
