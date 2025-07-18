@@ -1,5 +1,5 @@
 ---
-name: CI
+name: ansible-lint
 on:
   push:
     branches: ["main"]
