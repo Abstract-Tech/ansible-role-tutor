@@ -1,4 +1,5 @@
 # Tutor ansible role
+[![Ansible Lint](https://github.com/Abstract-Tech/ansible-role-tutor/actions/workflows/ci.yml/badge.svg)](https://github.com/Abstract-Tech/ansible-role-tutor/actions/workflows/ci.yml)
 A role to deploy & configure openedx managed by tutor
 
 # Role variables
