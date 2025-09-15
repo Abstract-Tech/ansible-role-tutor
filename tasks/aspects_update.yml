@@ -106,7 +106,7 @@
       failed_when: tutor_stop.rc != 0
       changed_when: true
 
-    - name: ASPECTS | Initialize aspects plugin
+    - name: ASPECTS | Initialize aspects plugin (Might take a while..)
       ansible.builtin.command: |
         {{ tutor_venv_path }}/bin/tutor local do init
       environment:

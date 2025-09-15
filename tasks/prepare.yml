@@ -1,0 +1,35 @@
+---
+- name: Prepare
+  hosts: all
+  become: true
+  tasks:
+    - name: SYSTEM |  Update dnf cache
+      ansible.builtin.dnf:
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: SYSTEM |  Install required packages
+      ansible.builtin.package:
+        name:
+          - docker
+          - docker-compose-v2
+        state: present
+
+    - name: SYSTEM |  Start docker service
+      ansible.builtin.systemd:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: SYSTEM | Add tutor user
+      ansible.builtin.user:
+        name: "{{ tutor_user }}"
+        group: "{{ tutor_group }}"
+        groups:
+          - docker
+        local: "{{ tutor_user_local_management | default(true) }}"
+        system: false
+        createhome: true
+        shell: "{{ tutor_user_shell }}"
+      tags:
+        - tutor_install
