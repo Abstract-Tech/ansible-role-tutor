@@ -24,7 +24,7 @@ tutor_reload_arguments: "local start -d"
 
 ## Service options
 # Documentation
-tutor_documentation_link: "https://docs.tutor.overhang.io"
+tutor_documentation_link: "https://docs.tutor.edly.io"
 
 # Owner
 tutor_user: tutor
@@ -84,6 +84,6 @@ tutor_enable_weekly_goal_emails: false
 tutor_compose_overrides:
 # Aspects plugin settings
 tutor_aspects_update: false
-tutor_aspects_version: "1.3.0"
+tutor_aspects_version: "2.4.0"
 tutor_aspects_image: ""
 tutor_aspects_superset_image: ""
