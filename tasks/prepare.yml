@@ -7,6 +7,8 @@
       ansible.builtin.dnf:
         update_cache: true
         cache_valid_time: 3600
+      tags:
+        - tutor_install
 
     - name: SYSTEM |  Install required packages
       ansible.builtin.package:
@@ -14,12 +16,16 @@
           - docker
           - docker-compose-v2
         state: present
+      tags:
+        - tutor_install
 
     - name: SYSTEM |  Start docker service
       ansible.builtin.systemd:
         name: docker
         state: started
         enabled: true
+      tags:
+        - tutor_install   
 
     - name: SYSTEM | Add tutor user
       ansible.builtin.user:
