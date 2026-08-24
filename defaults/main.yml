@@ -21,6 +21,10 @@ tutor_exec_name: bin/tutor
 tutor_init_arguments: "local do init"
 tutor_start_arguments: "local start"
 tutor_reload_arguments: "local start -d"
+# Bound for ExecReload (seconds). Covers a cold multi-GB image pull + full
+# container recreate (measured up to ~8m30s); systemd's 90s default cannot.
+# Keep bounded — never "infinity" — so genuine failures still go red.
+tutor_reload_timeout: 900
 
 ## Service options
 # Documentation

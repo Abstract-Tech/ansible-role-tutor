@@ -11,6 +11,12 @@
   notify:
     - Reload tutor
   changed_when: '"Pull complete" in tutor_pull_result.stdout or "Downloaded newer image" in tutor_pull_result.stdout'
+  # NOTE: tutor_config is here so the pull runs in the same CI playbook that
+  # writes the new image tag and fires the "Reload tutor" handler. Without it
+  # the handler reloads against a cold cache and ExecReload pulls inline.
+  # Requires main.yml to import update.yml AFTER config.yml — the pull reads
+  # the image tag from the on-host config that config.yml writes.
   tags:
     - tutor_update
     - tutor_deploy
+    - tutor_config

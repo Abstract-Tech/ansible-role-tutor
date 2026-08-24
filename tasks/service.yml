@@ -1,4 +1,7 @@
 ---
+# NOTE: also tagged tutor_config so a unit-file fix self-delivers through the
+# first CI playbook (`-t tutor_config`) — the only one a host whose reload is
+# currently failing ever reaches (the job aborts before `-t tutor_service`).
 - name: TUTOR | Copy Daemon script
   ansible.builtin.template:
     src: tutor.service.j2
@@ -6,9 +9,12 @@
     mode: "0644"
     owner: root
     group: root
-  notify: Reload tutor
+  notify:
+    - Reload systemd daemon
+    - Reload tutor
   tags:
     - tutor_service
+    - tutor_config
 
 - name: TUTOR | Configuring service
   ansible.builtin.systemd:

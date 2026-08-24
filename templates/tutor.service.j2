@@ -14,6 +14,14 @@ LimitNOFILE={{ tutor_max_files }}
 WorkingDirectory={{ tutor_venv_path }}
 ExecStart={{ tutor_venv_path }}/{{ tutor_exec_name }} {{ tutor_start_arguments }}
 ExecReload={{ tutor_venv_path }}/{{ tutor_exec_name }} {{ tutor_reload_arguments }}
+# DECISION: bound ExecReload explicitly instead of inheriting systemd's
+# DefaultTimeoutStartSec (90s on Ubuntu). The reload runs `docker compose up -d`,
+# which on a new image tag performs a multi-GB inline pull + full container
+# recreate — measured 7m19s on globalcampus staging vs the 90s default, killing
+# 61 of 118 deploys since image tags became :{CI_PIPELINE_ID}. 900s is bounded
+# on purpose: a genuine failure (e.g. registry auth) must still fail RED.
+# See: Taiga trabucchis-internal-stuff US #1459.
+TimeoutStartSec={{ tutor_reload_timeout }}
 KillSignal=SIGTERM
 Environment="TUTOR_ROOT={{ tutor_venv_path }}/config"
 Environment="TUTOR_PLUGINS_ROOT={{ tutor_venv_path }}/config/plugins"

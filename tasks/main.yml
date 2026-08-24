@@ -9,11 +9,6 @@
   tags:
     - tutor_ssh
 
-- name: TUTOR | Update
-  ansible.builtin.import_tasks: update.yml
-  tags:
-    - tutor_update
-
 - name: TUTOR | Configure
   ansible.builtin.import_tasks: config.yml
   environment:
@@ -21,6 +16,15 @@
     TUTOR_PLUGINS_ROOT: "{{ tutor_config_path }}/plugins"
   tags:
     - tutor_configure
+
+# DECISION: Update (image pull) imports AFTER Configure. The pull resolves
+# image refs from the on-host tutor config, so pulling first fetches the
+# PREVIOUS deploy's tags and the reload still cold-pulls inline.
+# See: Taiga trabucchis-internal-stuff US #1459.
+- name: TUTOR | Update
+  ansible.builtin.import_tasks: update.yml
+  tags:
+    - tutor_update
 
 - name: TUTOR | Init
   ansible.builtin.import_tasks: init.yml
