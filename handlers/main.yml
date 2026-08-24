@@ -1,4 +1,10 @@
 ---
+# NOTE: defined BEFORE "Reload tutor" on purpose — handlers run in definition
+# order, and `state: reloaded` does not re-read an edited unit file on its own.
+- name: Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: true
+
 - name: Reload tutor
   ansible.builtin.systemd:
     name: tutor
